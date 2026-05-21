@@ -1,3 +1,7 @@
+from security import configure_logging, mask
+configure_logging()
+
+import logging
 from ghl.client import GHLClient
 from ghl.contacts import Contacts
 from ghl.opportunities import Opportunities
@@ -11,6 +15,8 @@ from ghl.custom_fields import CustomFields
 from ghl.workflows import Workflows
 from ghl.surveys import Surveys
 from config import GHL_LOCATION_ID
+
+logger = logging.getLogger(__name__)
 
 
 class AlignInnovateGHL:
@@ -31,13 +37,17 @@ class AlignInnovateGHL:
         self.surveys = Surveys(client)
 
 
-def verify_connection():
+def verify_connection() -> "AlignInnovateGHL":
     ghl = AlignInnovateGHL()
-    print("Verifying GoHighLevel connection...")
-    location = ghl.locations.get()
-    print(f"Connected to location: {location.get('location', {}).get('name', 'Unknown')}")
-    print(f"Location ID: {GHL_LOCATION_ID}")
-    print("Connection verified.")
+    logger.info("Verifying GoHighLevel connection...")
+    try:
+        location = ghl.locations.get()
+        name = location.get("location", {}).get("name", "Unknown")
+        logger.info("Connected | location_name=%s | location_id=%s", name, mask(GHL_LOCATION_ID))
+        print(f"Connected to GHL location: {name}")
+    except Exception as exc:
+        logger.error("GHL connection failed: %s", exc)
+        raise
     return ghl
 
 

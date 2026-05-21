@@ -1,10 +1,46 @@
-# Environment variables
+# Environment / secrets — NEVER commit these
 .env
-.env*.local
+.env.*
+!.env.example
+secrets.py
+secrets/
+*.pem
+*.key
+*.p12
+*.pfx
+*.cer
+credentials.json
+service_account.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+venv/
+.venv/
+env/
+.env/
+ENV/
 
 # Dependencies
 node_modules/
 
-# Misc
-.DS_Store
+# Logs — may contain tokens or PII
 *.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
